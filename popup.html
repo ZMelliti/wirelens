@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      width: 600px;
+      height: 500px;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 12px;
+    }
+    
+    .header {
+      background: #f5f5f5;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .filters {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .filter-select {
+      padding: 4px 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 11px;
+    }
+    
+    .clear-btn {
+      background: #ff4444;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+    }
+    
+    .api-list {
+      height: 420px;
+      overflow-y: auto;
+    }
+    
+    .api-item {
+      border-bottom: 1px solid #eee;
+      padding: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .api-item:hover {
+      background: #f9f9f9;
+    }
+    
+    .method {
+      font-weight: bold;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 10px;
+      min-width: 40px;
+      text-align: center;
+    }
+    
+    .GET { background: #4CAF50; color: white; }
+    .POST { background: #2196F3; color: white; }
+    .PUT { background: #FF9800; color: white; }
+    .DELETE { background: #f44336; color: white; }
+    .PATCH { background: #9C27B0; color: white; }
+    
+    .status {
+      font-weight: bold;
+      min-width: 30px;
+    }
+    
+    .status-2xx { color: #4CAF50; }
+    .status-3xx { color: #FF9800; }
+    .status-4xx { color: #f44336; }
+    .status-5xx { color: #f44336; }
+    
+    .url {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .duration {
+      color: #666;
+      font-size: 10px;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 50px 20px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="filters">
+      <select class="filter-select" id="methodFilter">
+        <option value="">All Methods</option>
+        <option value="GET">GET</option>
+        <option value="POST">POST</option>
+        <option value="PUT">PUT</option>
+        <option value="DELETE">DELETE</option>
+        <option value="PATCH">PATCH</option>
+      </select>
+      <select class="filter-select" id="statusFilter">
+        <option value="">All Status</option>
+        <option value="2">2xx Success</option>
+        <option value="3">3xx Redirect</option>
+        <option value="4">4xx Client Error</option>
+        <option value="5">5xx Server Error</option>
+      </select>
+    </div>
+    <button class="clear-btn" id="clearBtn">Clear</button>
+  </div>
+  
+  <div class="api-list" id="apiList">
+    <div class="empty-state">
+      No API calls detected. Navigate to a website to start monitoring.
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
