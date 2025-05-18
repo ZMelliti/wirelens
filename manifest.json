@@ -5,8 +5,12 @@
   "description": "A lightweight browser extension that logs and visualizes all API calls made by any website in real time.",
   "permissions": [
     "activeTab",
-    "storage"
+    "storage",
+    "tabs"
   ],
+  "background": {
+    "service_worker": "background.js"
+  },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],

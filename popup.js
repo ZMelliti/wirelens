@@ -40,6 +40,11 @@ document.addEventListener('DOMContentLoaded', function() {
     `).join('');
     
     apiList.innerHTML = html;
+    
+    // Add click listeners to API items
+    document.querySelectorAll('.api-item').forEach(item => {
+      item.addEventListener('click', handleApiItemClick);
+    });
   }
   
   function filterApiCalls() {
@@ -61,6 +66,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     renderApiCalls(filtered);
+  }
+  
+  function handleApiItemClick(event) {
+    const apiItem = event.target.closest('.api-item');
+    if (apiItem) {
+      const callId = apiItem.dataset.id;
+      window.location.href = `details.html?id=${callId}`;
+    }
   }
   
   function loadApiCalls() {

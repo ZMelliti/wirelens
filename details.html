@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      width: 700px;
+      height: 600px;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 12px;
+    }
+    
+    .header {
+      background: #f5f5f5;
+      padding: 15px;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .back-btn {
+      background: #2196F3;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    
+    .content {
+      padding: 15px;
+      height: 520px;
+      overflow-y: auto;
+    }
+    
+    .section {
+      margin-bottom: 20px;
+    }
+    
+    .section-title {
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #333;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 4px;
+    }
+    
+    .info-grid {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    
+    .info-label {
+      font-weight: bold;
+      color: #666;
+    }
+    
+    .info-value {
+      word-break: break-all;
+    }
+    
+    .code-block {
+      background: #f8f8f8;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 10px;
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      white-space: pre-wrap;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <button class="back-btn" id="backBtn">← Back to List</button>
+  </div>
+  
+  <div class="content" id="content">
+    <div class="section">
+      <div class="section-title">Request Details</div>
+      <div class="info-grid" id="requestInfo"></div>
+    </div>
+    
+    <div class="section">
+      <div class="section-title">Request Headers</div>
+      <div class="code-block" id="requestHeaders">No headers available</div>
+    </div>
+    
+    <div class="section">
+      <div class="section-title">Request Body</div>
+      <div class="code-block" id="requestBody">No request body</div>
+    </div>
+    
+    <div class="section">
+      <div class="section-title">Response Headers</div>
+      <div class="code-block" id="responseHeaders">No headers available</div>
+    </div>
+    
+    <div class="section">
+      <div class="section-title">Response Body</div>
+      <div class="code-block" id="responseBody">No response body</div>
+    </div>
+  </div>
+  
+  <script src="details.js"></script>
+</body>
+</html>

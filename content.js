@@ -93,6 +93,48 @@
       });
   };
   
-  // Clear storage on page load
+  // Intercept WebSocket
+  const originalWebSocket = window.WebSocket;
+  window.WebSocket = function(url, protocols) {
+    const ws = new originalWebSocket(url, protocols);
+    const startTime = Date.now();
+    
+    const requestData = {
+      id: Date.now() + Math.random(),
+      method: 'WebSocket',
+      url,
+      timestamp: new Date().toISOString(),
+      type: 'WebSocket'
+    };
+    
+    ws.addEventListener('open', () => {
+      const apiCall = {
+        ...requestData,
+        status: 101,
+        statusText: 'Switching Protocols',
+        duration: Date.now() - startTime
+      };
+      
+      apiCalls.push(apiCall);
+      chrome.storage.local.set({ apiCalls });
+    });
+    
+    ws.addEventListener('error', () => {
+      const apiCall = {
+        ...requestData,
+        status: 0,
+        statusText: 'WebSocket Error',
+        duration: Date.now() - startTime
+      };
+      
+      apiCalls.push(apiCall);
+      chrome.storage.local.set({ apiCalls });
+    });
+    
+    return ws;
+  };
+  
+  // Set current tab ID and clear storage on page load
+  chrome.runtime.sendMessage({ action: 'setTabId' });
   chrome.storage.local.set({ apiCalls: [] });
 })();
