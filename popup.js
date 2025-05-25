@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const methodFilter = document.getElementById('methodFilter');
   const statusFilter = document.getElementById('statusFilter');
   const clearBtn = document.getElementById('clearBtn');
+  const exportBtn = document.getElementById('exportBtn');
   
   let allApiCalls = [];
   
@@ -91,6 +92,12 @@ document.addEventListener('DOMContentLoaded', function() {
     chrome.storage.local.set({ apiCalls: [] });
     allApiCalls = [];
     renderApiCalls([]);
+  });
+  
+  exportBtn.addEventListener('click', function() {
+    if (allApiCalls.length > 0) {
+      exportApiCalls(allApiCalls, 'json');
+    }
   });
   
   // Load initial data
