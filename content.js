@@ -3,6 +3,14 @@
   'use strict';
 
   const apiCalls = [];
+  const MAX_CALLS = 1000; // Limit stored calls for performance
+  
+  // Throttled storage update to prevent excessive writes
+  const updateStorage = WireLensUtils?.throttle ? 
+    WireLensUtils.throttle(() => {
+      chrome.storage.local.set({ apiCalls: apiCalls.slice(-MAX_CALLS) });
+    }, 100) : 
+    () => chrome.storage.local.set({ apiCalls: apiCalls.slice(-MAX_CALLS) });
   
   // Intercept XMLHttpRequest
   const originalXHR = window.XMLHttpRequest;
@@ -38,7 +46,7 @@
         };
         
         apiCalls.push(apiCall);
-        chrome.storage.local.set({ apiCalls });
+        updateStorage();
       });
       
       return originalSend.apply(this, arguments);
@@ -73,7 +81,7 @@
         };
         
         apiCalls.push(apiCall);
-        chrome.storage.local.set({ apiCalls });
+        updateStorage();
         
         return response;
       })
@@ -87,7 +95,7 @@
         };
         
         apiCalls.push(apiCall);
-        chrome.storage.local.set({ apiCalls });
+        updateStorage();
         
         throw error;
       });
@@ -116,7 +124,7 @@
       };
       
       apiCalls.push(apiCall);
-      chrome.storage.local.set({ apiCalls });
+      updateStorage();
     });
     
     ws.addEventListener('error', () => {
@@ -128,7 +136,7 @@
       };
       
       apiCalls.push(apiCall);
-      chrome.storage.local.set({ apiCalls });
+      updateStorage();
     });
     
     return ws;
