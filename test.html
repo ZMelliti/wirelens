@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>WireLens Test Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    button {
+      background: #2196F3;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 5px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    button:hover {
+      background: #1976D2;
+    }
+    
+    .section {
+      margin: 20px 0;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    
+    h2 {
+      color: #333;
+      margin-top: 0;
+    }
+    
+    .log {
+      background: #f5f5f5;
+      padding: 10px;
+      border-radius: 4px;
+      margin-top: 10px;
+      font-family: monospace;
+      font-size: 12px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>WireLens Test Page</h1>
+  <p>Use this page to test the WireLens extension. Click the buttons below to generate different types of API calls.</p>
+  
+  <div class="section">
+    <h2>XMLHttpRequest Tests</h2>
+    <button onclick="testXHRGet()">GET Request</button>
+    <button onclick="testXHRPost()">POST Request</button>
+    <button onclick="testXHRError()">Error Request</button>
+    <div class="log" id="xhrLog"></div>
+  </div>
+  
+  <div class="section">
+    <h2>Fetch API Tests</h2>
+    <button onclick="testFetchGet()">Fetch GET</button>
+    <button onclick="testFetchPost()">Fetch POST</button>
+    <button onclick="testFetchError()">Fetch Error</button>
+    <div class="log" id="fetchLog"></div>
+  </div>
+  
+  <div class="section">
+    <h2>WebSocket Tests</h2>
+    <button onclick="testWebSocket()">WebSocket Connection</button>
+    <div class="log" id="wsLog"></div>
+  </div>
+  
+  <script>
+    function log(section, message) {
+      const logElement = document.getElementById(section + 'Log');
+      logElement.innerHTML += new Date().toLocaleTimeString() + ': ' + message + '<br>';
+      logElement.scrollTop = logElement.scrollHeight;
+    }
+    
+    // XHR Tests
+    function testXHRGet() {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', 'https://jsonplaceholder.typicode.com/posts/1');
+      xhr.onload = () => log('xhr', 'GET request completed: ' + xhr.status);
+      xhr.onerror = () => log('xhr', 'GET request failed');
+      xhr.send();
+    }
+    
+    function testXHRPost() {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', 'https://jsonplaceholder.typicode.com/posts');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onload = () => log('xhr', 'POST request completed: ' + xhr.status);
+      xhr.onerror = () => log('xhr', 'POST request failed');
+      xhr.send(JSON.stringify({ title: 'Test', body: 'Test body', userId: 1 }));
+    }
+    
+    function testXHRError() {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', 'https://invalid-domain-for-testing.com/api');
+      xhr.onload = () => log('xhr', 'Error request completed: ' + xhr.status);
+      xhr.onerror = () => log('xhr', 'Error request failed as expected');
+      xhr.send();
+    }
+    
+    // Fetch Tests
+    function testFetchGet() {
+      fetch('https://jsonplaceholder.typicode.com/posts/2')
+        .then(response => log('fetch', 'Fetch GET completed: ' + response.status))
+        .catch(error => log('fetch', 'Fetch GET failed: ' + error.message));
+    }
+    
+    function testFetchPost() {
+      fetch('https://jsonplaceholder.typicode.com/posts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: 'Fetch Test', body: 'Fetch body', userId: 2 })
+      })
+        .then(response => log('fetch', 'Fetch POST completed: ' + response.status))
+        .catch(error => log('fetch', 'Fetch POST failed: ' + error.message));
+    }
+    
+    function testFetchError() {
+      fetch('https://invalid-domain-for-testing.com/api')
+        .then(response => log('fetch', 'Fetch error completed: ' + response.status))
+        .catch(error => log('fetch', 'Fetch error failed as expected: ' + error.message));
+    }
+    
+    // WebSocket Test
+    function testWebSocket() {
+      try {
+        const ws = new WebSocket('wss://echo.websocket.org');
+        ws.onopen = () => {
+          log('ws', 'WebSocket connection opened');
+          ws.send('Hello WebSocket!');
+        };
+        ws.onmessage = (event) => log('ws', 'WebSocket message received: ' + event.data);
+        ws.onerror = () => log('ws', 'WebSocket error occurred');
+        ws.onclose = () => log('ws', 'WebSocket connection closed');
+        
+        setTimeout(() => ws.close(), 3000);
+      } catch (error) {
+        log('ws', 'WebSocket test failed: ' + error.message);
+      }
+    }
+  </script>
+</body>
+</html>
