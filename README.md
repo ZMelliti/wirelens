@@ -34,7 +34,7 @@ Ideal for developers and QA engineers to debug, monitor, and analyze network req
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/wirelens.git
+   git clone https://github.com/zmelliti/wirelens.git
    cd wirelens
    ```
 
