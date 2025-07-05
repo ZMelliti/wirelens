@@ -2,15 +2,11 @@
 (function() {
   'use strict';
 
-  const apiCalls = [];
-  const MAX_CALLS = 1000; // Limit stored calls for performance
+  let apiCalls = [];
   
-  // Throttled storage update to prevent excessive writes
-  const updateStorage = WireLensUtils?.throttle ? 
-    WireLensUtils.throttle(() => {
-      chrome.storage.local.set({ apiCalls: apiCalls.slice(-MAX_CALLS) });
-    }, 100) : 
-    () => chrome.storage.local.set({ apiCalls: apiCalls.slice(-MAX_CALLS) });
+  function updateStorage() {
+    chrome.storage.local.set({ apiCalls: apiCalls });
+  }
   
   // Intercept XMLHttpRequest
   const originalXHR = window.XMLHttpRequest;
@@ -142,7 +138,6 @@
     return ws;
   };
   
-  // Set current tab ID and clear storage on page load
-  chrome.runtime.sendMessage({ action: 'setTabId' });
+  // Initialize storage on page load
   chrome.storage.local.set({ apiCalls: [] });
 })();

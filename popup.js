@@ -103,6 +103,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // Load initial data
   loadApiCalls();
   
-  // Refresh every second
-  setInterval(loadApiCalls, 1000);
+  // Refresh every 500ms for better responsiveness
+  setInterval(loadApiCalls, 500);
 });
