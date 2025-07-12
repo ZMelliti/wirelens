@@ -5,8 +5,14 @@
   let apiCalls = [];
   
   function updateStorage() {
-    chrome.storage.local.set({ apiCalls: apiCalls });
+    try {
+      chrome.storage.local.set({ apiCalls: apiCalls });
+    } catch (e) {
+      console.log('WireLens: Storage update failed', e);
+    }
   }
+  
+  console.log('WireLens: Content script loaded');
   
   // Intercept XMLHttpRequest
   const originalXHR = window.XMLHttpRequest;
@@ -41,6 +47,7 @@
           duration: Date.now() - new Date(requestData.timestamp).getTime()
         };
         
+        console.log('WireLens: XHR captured', apiCall);
         apiCalls.push(apiCall);
         updateStorage();
       });
@@ -76,6 +83,7 @@
           duration: Date.now() - startTime
         };
         
+        console.log('WireLens: Fetch captured', apiCall);
         apiCalls.push(apiCall);
         updateStorage();
         
