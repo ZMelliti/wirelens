@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const methodFilter = document.getElementById('methodFilter');
   const statusFilter = document.getElementById('statusFilter');
   const domainFilter = document.getElementById('domainFilter');
+  const typeFilter = document.getElementById('typeFilter');
   const timeFilter = document.getElementById('timeFilter');
   const sizeFilter = document.getElementById('sizeFilter');
   const searchInput = document.getElementById('searchInput');
@@ -105,6 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const methodValue = methodFilter.value;
     const statusValue = statusFilter.value;
     const domainValue = domainFilter.value;
+    const typeValue = typeFilter.value;
     const timeValue = timeFilter.value;
     const sizeValue = sizeFilter.value;
     const searchValue = searchInput.value.toLowerCase();
@@ -125,6 +127,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (domainValue) {
       filtered = filtered.filter(call => getDomain(call.url) === domainValue);
+    }
+    
+    if (typeValue) {
+      filtered = filtered.filter(call => call.type === typeValue);
     }
     
     if (timeValue) {
@@ -181,6 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
   methodFilter.addEventListener('change', filterApiCalls);
   statusFilter.addEventListener('change', filterApiCalls);
   domainFilter.addEventListener('change', filterApiCalls);
+  typeFilter.addEventListener('change', filterApiCalls);
   timeFilter.addEventListener('change', filterApiCalls);
   sizeFilter.addEventListener('change', filterApiCalls);
   searchInput.addEventListener('input', filterApiCalls);
