@@ -17,6 +17,35 @@ document.addEventListener('DOMContentLoaded', function() {
   let isPaused = false;
   let currentView = 'list';
   
+  // Tab functionality
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const tabName = tab.dataset.tab;
+      
+      // Update active tab
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      
+      // Update active panel
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById(tabName + '-panel').classList.add('active');
+    });
+  });
+  
+  // Update stats
+  function updateStats() {
+    const total = allApiCalls.length;
+    const errors = allApiCalls.filter(call => call.status >= 400 || call.status === 0).length;
+    const avgDuration = total > 0 ? Math.round(allApiCalls.reduce((sum, call) => sum + (call.duration || 0), 0) / total) : 0;
+    const errorRate = total > 0 ? Math.round((errors / total) * 100) : 0;
+    
+    document.getElementById('totalCount').textContent = total + ' requests';
+    document.getElementById('totalRequests').textContent = total;
+    document.getElementById('avgDuration').textContent = avgDuration + 'ms';
+    document.getElementById('errorRate').textContent = errorRate + '%';
+    document.getElementById('activeStatus').style.color = isPaused ? '#FF9800' : '#4CAF50';
+  }
+  
   let allApiCalls = [];
   
   function formatUrl(url) {
@@ -179,6 +208,7 @@ document.addEventListener('DOMContentLoaded', function() {
       allApiCalls = result.apiCalls || [];
       console.log('WireLens Popup: API calls count', allApiCalls.length);
       updateDomainFilter();
+      updateStats();
       filterApiCalls();
     });
   }
@@ -194,22 +224,8 @@ document.addEventListener('DOMContentLoaded', function() {
   
   pauseBtn.addEventListener('click', function() {
     isPaused = !isPaused;
-    pauseBtn.innerHTML = isPaused ? '<span class="btn-icon">▶️</span> Resume' : '<span class="btn-icon">⏸️</span> Pause';
-  });
-  
-  listView.addEventListener('click', function() {
-    currentView = 'list';
-    listView.classList.add('active');
-    chartView.classList.remove('active');
-    filterApiCalls();
-  });
-  
-  chartView.addEventListener('click', function() {
-    currentView = 'chart';
-    chartView.classList.add('active');
-    listView.classList.remove('active');
-    // TODO: Implement chart view
-    filterApiCalls();
+    pauseBtn.textContent = isPaused ? '▶️' : '⏸️';
+    updateStats();
   });
   
   clearBtn.addEventListener('click', function() {
