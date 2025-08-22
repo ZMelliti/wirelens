@@ -27,6 +27,7 @@
     
     xhr.send = function(data) {
       requestData.requestBody = data;
+      requestData.requestHeaders = {};
       
       xhr.addEventListener('loadend', () => {
         const apiCall = {
@@ -61,7 +62,8 @@
       url,
       timestamp: new Date().toISOString(),
       type: 'Fetch',
-      requestBody: init.body
+      requestBody: init.body,
+      requestHeaders: init.headers || {}
     };
     
     return originalFetch.apply(this, arguments)

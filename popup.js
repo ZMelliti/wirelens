@@ -9,8 +9,12 @@ document.addEventListener('DOMContentLoaded', function() {
   const sizeFilter = document.getElementById('sizeFilter');
   const searchInput = document.getElementById('searchInput');
   const pauseBtn = document.getElementById('pauseBtn');
+  const autoRefreshBtn = document.getElementById('autoRefreshBtn');
   const clearBtn = document.getElementById('clearBtn');
   const exportBtn = document.getElementById('exportBtn');
+  
+  let autoRefresh = true;
+  let refreshInterval;
   const listView = document.getElementById('listView');
   const chartView = document.getElementById('chartView');
   
@@ -97,6 +101,10 @@ document.addEventListener('DOMContentLoaded', function() {
         <span class="url" title="${call.url}">${formatUrl(call.url)}</span>
         <span class="duration">${call.duration}ms</span>
         <span class="size">${formatBytes(getRequestSize(call))}</span>
+        <div class="api-details">
+          <div class="headers">${Object.keys(call.requestHeaders || {}).length} headers</div>
+          <div class="timestamp">${new Date(call.timestamp).toLocaleTimeString()}</div>
+        </div>
       </div>
     `).join('');
     
@@ -228,6 +236,16 @@ document.addEventListener('DOMContentLoaded', function() {
     updateStats();
   });
   
+  autoRefreshBtn.addEventListener('click', function() {
+    autoRefresh = !autoRefresh;
+    autoRefreshBtn.style.opacity = autoRefresh ? '1' : '0.5';
+    if (autoRefresh) {
+      refreshInterval = setInterval(loadApiCalls, 500);
+    } else {
+      clearInterval(refreshInterval);
+    }
+  });
+  
   clearBtn.addEventListener('click', function() {
     chrome.storage.local.set({ apiCalls: [] });
     allApiCalls = [];
@@ -243,6 +261,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // Load initial data
   loadApiCalls();
   
-  // Refresh every 500ms for better responsiveness
-  setInterval(loadApiCalls, 500);
+  // Start auto-refresh interval
+  refreshInterval = setInterval(loadApiCalls, 500);
 });

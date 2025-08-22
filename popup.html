@@ -174,11 +174,19 @@
       padding: 12px 16px;
       cursor: pointer;
       display: grid;
-      grid-template-columns: 60px 45px 1fr 70px 60px;
+      grid-template-columns: 60px 45px 1fr 70px 60px 120px;
       align-items: center;
       gap: 12px;
       font-size: 11px;
       transition: all 0.2s ease;
+    }
+    
+    .api-details {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 9px;
+      color: #666;
     }
     
     .api-item:hover {
@@ -264,6 +272,7 @@
     </div>
     <div class="action-section">
       <button class="action-btn" id="pauseBtn">⏸️</button>
+      <button class="action-btn" id="autoRefreshBtn" title="Auto-refresh">🔄</button>
       <button class="action-btn" id="exportBtn">📥</button>
       <button class="action-btn" id="clearBtn">🗑️</button>
     </div>
