@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const autoRefreshBtn = document.getElementById('autoRefreshBtn');
   const clearBtn = document.getElementById('clearBtn');
   const exportBtn = document.getElementById('exportBtn');
+  const settingsBtn = document.getElementById('settingsBtn');
   
   let autoRefresh = true;
   let refreshInterval;
@@ -43,11 +44,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const avgDuration = total > 0 ? Math.round(allApiCalls.reduce((sum, call) => sum + (call.duration || 0), 0) / total) : 0;
     const errorRate = total > 0 ? Math.round((errors / total) * 100) : 0;
     
-    document.getElementById('totalCount').textContent = total + ' requests';
+    // Update header stats
+    document.getElementById('totalCount').textContent = total;
+    document.getElementById('errorCount').textContent = errors;
+    
+    // Update stats panel
     document.getElementById('totalRequests').textContent = total;
     document.getElementById('avgDuration').textContent = avgDuration + 'ms';
     document.getElementById('errorRate').textContent = errorRate + '%';
-    document.getElementById('activeStatus').style.color = isPaused ? '#FF9800' : '#4CAF50';
+    
+    // Update status indicator
+    const statusIndicator = document.getElementById('activeStatus');
+    statusIndicator.className = 'status-indicator ' + (isPaused ? 'paused' : errors > 0 ? 'error' : 'active');
   }
   
   let allApiCalls = [];
@@ -244,6 +252,10 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
       clearInterval(refreshInterval);
     }
+  });
+  
+  settingsBtn.addEventListener('click', function() {
+    chrome.tabs.create({ url: chrome.runtime.getURL('options.html') });
   });
   
   clearBtn.addEventListener('click', function() {

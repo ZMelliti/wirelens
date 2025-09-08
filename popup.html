@@ -13,30 +13,138 @@
     }
     
     .header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      padding: 15px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      padding: 12px 16px;
       color: white;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+      position: relative;
+      overflow: hidden;
     }
     
-    .header-title h1 {
-      margin: 0;
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20" fill="white" opacity="0.1"><circle cx="10" cy="10" r="1"/><circle cx="30" cy="10" r="1"/><circle cx="50" cy="10" r="1"/><circle cx="70" cy="10" r="1"/><circle cx="90" cy="10" r="1"/></svg>') repeat;
+      pointer-events: none;
+    }
+    
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 1;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .brand-name {
+      font-size: 18px;
+      font-weight: 700;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      letter-spacing: -0.5px;
+    }
+    
+    .version {
+      background: rgba(255,255,255,0.2);
+      padding: 2px 6px;
+      border-radius: 8px;
+      font-size: 9px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      z-index: 1;
+    }
+    
+    .stats-compact {
+      display: flex;
+      gap: 12px;
+    }
+    
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    
+    .stat-number {
       font-size: 16px;
       font-weight: 700;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
     
-    .stats {
+    .stat-label {
+      font-size: 9px;
+      opacity: 0.8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .status-controls {
       display: flex;
-      gap: 10px;
       align-items: center;
-      font-size: 11px;
+      gap: 8px;
     }
     
     .status-indicator {
-      color: #4CAF50;
-      font-size: 14px;
+      font-size: 12px;
+      text-shadow: 0 0 8px rgba(0, 212, 170, 0.8);
+      animation: pulse 2s infinite;
+    }
+    
+    .status-indicator.active {
+      color: #00d4aa;
+    }
+    
+    .status-indicator.paused {
+      color: #fdcb6e;
+    }
+    
+    .status-indicator.error {
+      color: #e17055;
+    }
+    
+    .settings-btn {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white;
+      padding: 6px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.3s ease;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .settings-btn:hover {
+      background: rgba(255,255,255,0.2);
+      transform: rotate(90deg);
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
     }
     
     .toolbar {
@@ -94,8 +202,9 @@
     }
     
     .tab.active {
-      color: #667eea;
-      border-bottom-color: #667eea;
+      color: #6c5ce7;
+      border-bottom-color: #6c5ce7;
+      background: linear-gradient(180deg, transparent, rgba(108, 92, 231, 0.05));
     }
     
     .tab-content {
@@ -153,14 +262,18 @@
     .stat-card {
       text-align: center;
       padding: 20px;
-      border-radius: 8px;
-      background: #f8f9fa;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #f8f9ff, #e8f4fd);
+      border: 1px solid rgba(108, 92, 231, 0.1);
     }
     
     .stat-value {
       font-size: 24px;
       font-weight: 700;
-      color: #667eea;
+      background: linear-gradient(45deg, #6c5ce7, #74b9ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
     
     .stat-label {
@@ -190,7 +303,9 @@
     }
     
     .api-item:hover {
-      background: #f8f9ff;
+      background: linear-gradient(90deg, #f8f9ff, #e8f4fd);
+      transform: translateX(2px);
+      box-shadow: 0 2px 12px rgba(108, 92, 231, 0.1);
     }
     
     .method {
@@ -203,12 +318,12 @@
       color: white;
     }
     
-    .GET { background: #4CAF50; }
-    .POST { background: #2196F3; }
-    .PUT { background: #FF9800; }
-    .DELETE { background: #f44336; }
-    .PATCH { background: #9C27B0; }
-    .WebSocket { background: #607D8B; }
+    .GET { background: linear-gradient(45deg, #00d4aa, #00b894); }
+    .POST { background: linear-gradient(45deg, #6c5ce7, #a29bfe); }
+    .PUT { background: linear-gradient(45deg, #fd79a8, #e84393); }
+    .DELETE { background: linear-gradient(45deg, #e17055, #d63031); }
+    .PATCH { background: linear-gradient(45deg, #fdcb6e, #e17055); }
+    .WebSocket { background: linear-gradient(45deg, #74b9ff, #0984e3); }
     
     .status {
       font-weight: 600;
@@ -218,10 +333,10 @@
       text-align: center;
     }
     
-    .status-2xx { color: #4CAF50; background: rgba(76, 175, 80, 0.1); }
-    .status-3xx { color: #FF9800; background: rgba(255, 152, 0, 0.1); }
-    .status-4xx { color: #f44336; background: rgba(244, 67, 54, 0.1); }
-    .status-5xx { color: #f44336; background: rgba(244, 67, 54, 0.1); }
+    .status-2xx { color: #00b894; background: rgba(0, 184, 148, 0.15); }
+    .status-3xx { color: #fdcb6e; background: rgba(253, 203, 110, 0.15); }
+    .status-4xx { color: #e17055; background: rgba(225, 112, 85, 0.15); }
+    .status-5xx { color: #d63031; background: rgba(214, 48, 49, 0.15); }
     
     .url {
       overflow: hidden;
@@ -238,13 +353,13 @@
     }
     
     .duration {
-      color: #667eea;
-      background: rgba(102, 126, 234, 0.1);
+      color: #6c5ce7;
+      background: rgba(108, 92, 231, 0.15);
     }
     
     .size {
-      color: #764ba2;
-      background: rgba(118, 75, 162, 0.1);
+      color: #fd79a8;
+      background: rgba(253, 121, 168, 0.15);
     }
     
     .empty-state {
@@ -257,12 +372,31 @@
 </head>
 <body>
   <div class="header">
-    <div class="header-title">
-      <h1>🔍 WireLens</h1>
+    <div class="brand">
+      <div class="logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+          <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
+          <path d="M8 11l2 2 4-4" stroke="white" stroke-width="2" fill="none"/>
+        </svg>
+        <span class="brand-name">WireLens</span>
+      </div>
+      <div class="version">v1.0</div>
     </div>
-    <div class="stats">
-      <span id="totalCount">0 requests</span>
-      <span id="activeStatus" class="status-indicator">●</span>
+    <div class="header-controls">
+      <div class="stats-compact">
+        <div class="stat-item">
+          <span class="stat-number" id="totalCount">0</span>
+          <span class="stat-label">requests</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" id="errorCount">0</span>
+          <span class="stat-label">errors</span>
+        </div>
+      </div>
+      <div class="status-controls">
+        <span id="activeStatus" class="status-indicator active" title="Monitoring active">●</span>
+        <button class="settings-btn" id="settingsBtn" title="Settings">⚙️</button>
+      </div>
     </div>
   </div>
   
