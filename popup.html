@@ -195,10 +195,16 @@
       border: none;
       background: none;
       cursor: pointer;
-      font-size: 12px;
-      font-weight: 500;
-      color: #666;
+      font-size: 13px;
+      font-weight: 600;
+      color: #555;
       border-bottom: 2px solid transparent;
+      transition: all 0.2s ease;
+    }
+    
+    .tab:hover {
+      color: #333;
+      background: rgba(108, 92, 231, 0.05);
     }
     
     .tab.active {
@@ -277,9 +283,10 @@
     }
     
     .stat-label {
-      font-size: 11px;
-      color: #666;
+      font-size: 12px;
+      color: #555;
       margin-top: 5px;
+      font-weight: 600;
     }
     
     .api-item {
@@ -298,8 +305,9 @@
       display: flex;
       flex-direction: column;
       gap: 2px;
-      font-size: 9px;
-      color: #666;
+      font-size: 10px;
+      color: #555;
+      font-weight: 500;
     }
     
     .api-item:hover {
@@ -309,13 +317,15 @@
     }
     
     .method {
-      font-weight: 600;
-      padding: 4px 8px;
+      font-weight: 700;
+      padding: 5px 10px;
       border-radius: 12px;
-      font-size: 9px;
+      font-size: 10px;
       text-align: center;
       text-transform: uppercase;
       color: white;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      letter-spacing: 0.5px;
     }
     
     .GET { background: linear-gradient(45deg, #00d4aa, #00b894); }
@@ -326,23 +336,26 @@
     .WebSocket { background: linear-gradient(45deg, #74b9ff, #0984e3); }
     
     .status {
-      font-weight: 600;
-      padding: 2px 6px;
-      border-radius: 6px;
-      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 11px;
       text-align: center;
+      border: 1px solid rgba(0,0,0,0.1);
     }
     
-    .status-2xx { color: #00b894; background: rgba(0, 184, 148, 0.15); }
-    .status-3xx { color: #fdcb6e; background: rgba(253, 203, 110, 0.15); }
-    .status-4xx { color: #e17055; background: rgba(225, 112, 85, 0.15); }
-    .status-5xx { color: #d63031; background: rgba(214, 48, 49, 0.15); }
+    .status-2xx { color: #00a085; background: rgba(0, 184, 148, 0.2); }
+    .status-3xx { color: #e6b800; background: rgba(253, 203, 110, 0.25); }
+    .status-4xx { color: #d63031; background: rgba(225, 112, 85, 0.2); }
+    .status-5xx { color: #b71c1c; background: rgba(214, 48, 49, 0.2); }
     
     .url {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      color: #333;
+      color: #222;
+      font-weight: 500;
+      font-size: 12px;
     }
     
     .duration, .size {
@@ -365,8 +378,10 @@
     .empty-state {
       text-align: center;
       padding: 80px 20px;
-      color: #999;
-      font-size: 14px;
+      color: #666;
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.5;
     }
   </style>
 </head>
@@ -407,7 +422,9 @@
     <div class="action-section">
       <button class="action-btn" id="pauseBtn">⏸️</button>
       <button class="action-btn" id="autoRefreshBtn" title="Auto-refresh">🔄</button>
-      <button class="action-btn" id="exportBtn">📥</button>
+      <button class="action-btn" id="exportBtn" title="Export data">
+        📥 <span id="exportFormat">JSON</span>
+      </button>
       <button class="action-btn" id="clearBtn">🗑️</button>
     </div>
   </div>

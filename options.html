@@ -6,117 +6,474 @@
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      margin: 40px;
-      background: #f5f5f5;
+      margin: 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 30%, #f093fb 70%, #f5576c 100%);
+      min-height: 100vh;
+      padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="white" opacity="0.05"><circle cx="20" cy="20" r="2"/><circle cx="80" cy="20" r="2"/><circle cx="20" cy="80" r="2"/><circle cx="80" cy="80" r="2"/><circle cx="50" cy="50" r="1"/></svg>') repeat;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    .header {
+      text-align: center;
+      color: white;
+      margin-bottom: 40px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .header h1 {
+      font-size: 42px;
+      margin: 0;
+      font-weight: 800;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      background: linear-gradient(45deg, #fff, #f0f8ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -1px;
+    }
+    
+    .header p {
+      opacity: 0.9;
+      margin: 15px 0 0 0;
+      font-size: 16px;
+      font-weight: 300;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
     }
     
     .container {
-      max-width: 600px;
-      background: white;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      max-width: 800px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
     }
     
-    h1 {
-      color: #333;
-      margin-bottom: 30px;
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
     }
     
-    .setting-group {
-      margin-bottom: 25px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid #eee;
+    .tabs {
+      display: flex;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
     
-    .setting-label {
-      font-weight: bold;
-      margin-bottom: 8px;
-      color: #555;
-    }
-    
-    .setting-description {
-      font-size: 12px;
-      color: #666;
-      margin-bottom: 10px;
-    }
-    
-    input[type="number"], select {
-      padding: 8px 12px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 14px;
-    }
-    
-    input[type="checkbox"] {
-      margin-right: 8px;
-    }
-    
-    .save-btn {
-      background: #2196F3;
-      color: white;
+    .tab {
+      flex: 1;
+      padding: 18px;
       border: none;
-      padding: 12px 24px;
-      border-radius: 4px;
+      background: none;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 15px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.7);
+      transition: all 0.3s ease;
+      position: relative;
     }
     
-    .save-btn:hover {
-      background: #1976D2;
+    .tab:hover {
+      color: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.05);
     }
     
-    .status {
-      margin-top: 15px;
-      padding: 10px;
-      border-radius: 4px;
+    .tab.active {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 3px;
+      background: linear-gradient(90deg, #00d4aa, #74b9ff);
+      border-radius: 2px;
+    }
+    
+    .tab-content {
+      padding: 35px;
+    }
+    
+    .tab-panel {
       display: none;
     }
     
-    .status.success {
-      background: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
+    .tab-panel.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
     }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .setting-group {
+      margin-bottom: 28px;
+      padding: 24px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .setting-group:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    
+    .setting-group::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, #00d4aa, #74b9ff);
+      border-radius: 2px 0 0 2px;
+    }
+    
+    .setting-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    
+    .setting-label {
+      font-weight: 700;
+      color: white;
+      font-size: 17px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    
+    .setting-toggle {
+      position: relative;
+      width: 56px;
+      height: 28px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .setting-toggle.active {
+      background: linear-gradient(45deg, #00d4aa, #74b9ff);
+      box-shadow: 0 4px 15px rgba(0, 212, 170, 0.4);
+    }
+    
+    .setting-toggle::after {
+      content: '';
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      background: white;
+      border-radius: 50%;
+      top: 2px;
+      left: 3px;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .setting-toggle.active::after {
+      left: 31px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    
+    .setting-description {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.95);
+      margin-bottom: 15px;
+      line-height: 1.6;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+      font-weight: 400;
+    }
+    
+    .input-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    input[type="number"], select {
+      padding: 12px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 12px;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      color: white;
+      font-weight: 600;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+    
+    input[type="number"]:focus, select:focus {
+      outline: none;
+      border-color: rgba(0, 212, 170, 0.6);
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.2);
+      transform: translateY(-1px);
+    }
+    
+    input[type="number"]::placeholder, select option {
+      color: rgba(255, 255, 255, 0.6);
+    }
+    
+    select option {
+      background: #2a2a2a;
+      color: white;
+    }
+    
+    .save-section {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(15px);
+      padding: 25px 35px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .save-btn {
+      background: linear-gradient(45deg, #00d4aa, #74b9ff);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 25px rgba(0, 212, 170, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .save-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+    
+    .save-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(0, 212, 170, 0.4);
+    }
+    
+    .save-btn:hover::before {
+      left: 100%;
+    }
+    
+    .reset-btn {
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 14px 28px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+    
+    .reset-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+    
+    .status {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      transform: translateX(400px);
+      transition: all 0.3s;
+      z-index: 1000;
+    }
+    
+    .status.show {
+      transform: translateX(0);
+    }
+    
+    .status.success {
+      background: rgba(0, 212, 170, 0.9);
+      color: white;
+      border: 1px solid rgba(0, 212, 170, 0.3);
+      backdrop-filter: blur(10px);
+    }
+    
+    .status.error {
+      background: rgba(225, 112, 85, 0.9);
+      color: white;
+      border: 1px solid rgba(225, 112, 85, 0.3);
+      backdrop-filter: blur(10px);
+    }
+    
+    .performance-indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-left: 8px;
+    }
+    
+    .performance-good { background: #00d4aa; }
+    .performance-medium { background: #fdcb6e; }
+    .performance-high { background: #e17055; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>WireLens Settings</h1>
-    
-    <div class="setting-group">
-      <div class="setting-label">Maximum API Calls to Store</div>
-      <div class="setting-description">Limit the number of API calls stored to prevent memory issues</div>
-      <input type="number" id="maxCalls" min="100" max="5000" value="1000">
-    </div>
-    
-    <div class="setting-group">
-      <div class="setting-label">Auto-clear on Navigation</div>
-      <div class="setting-description">Automatically clear API calls when navigating to a new page</div>
-      <input type="checkbox" id="autoClear" checked>
-      <label for="autoClear">Enable auto-clear</label>
-    </div>
-    
-    <div class="setting-group">
-      <div class="setting-label">Default Export Format</div>
-      <div class="setting-description">Choose the default format for exporting API call data</div>
-      <select id="exportFormat">
-        <option value="json">JSON</option>
-        <option value="csv">CSV</option>
-      </select>
-    </div>
-    
-    <div class="setting-group">
-      <div class="setting-label">Monitor WebSockets</div>
-      <div class="setting-description">Include WebSocket connections in monitoring</div>
-      <input type="checkbox" id="monitorWebSockets" checked>
-      <label for="monitorWebSockets">Monitor WebSocket connections</label>
-    </div>
-    
-    <button class="save-btn" id="saveBtn">Save Settings</button>
-    
-    <div class="status" id="status">Settings saved successfully!</div>
+  <div class="header">
+    <h1>🔍 WireLens Settings</h1>
+    <p>Configure your API monitoring preferences</p>
   </div>
+  
+  <div class="container">
+    <div class="tabs">
+      <button class="tab active" data-tab="general">General</button>
+      <button class="tab" data-tab="monitoring">Monitoring</button>
+      <button class="tab" data-tab="export">Export</button>
+    </div>
+    
+    <div class="tab-content">
+      <div class="tab-panel active" id="general-panel">
+        <div class="setting-group">
+          <div class="setting-header">
+            <div class="setting-label">Auto-clear on Navigation</div>
+            <div class="setting-toggle" id="autoClearToggle"></div>
+          </div>
+          <div class="setting-description">Automatically clear API calls when navigating to a new page to keep the list manageable</div>
+        </div>
+        
+        <div class="setting-group">
+          <div class="setting-header">
+            <div class="setting-label">Maximum API Calls to Store</div>
+          </div>
+          <div class="setting-description">Limit stored API calls to prevent memory issues. Higher values may impact performance.</div>
+          <div class="input-group">
+            <input type="number" id="maxCalls" min="100" max="5000" step="100" value="1000">
+            <span id="performanceIndicator" class="performance-indicator performance-good"></span>
+            <span id="performanceText">Good performance</span>
+          </div>
+        </div>
+        
+        <div class="setting-group">
+          <div class="setting-header">
+            <div class="setting-label">Refresh Interval</div>
+          </div>
+          <div class="setting-description">How often to check for new API calls (in milliseconds)</div>
+          <div class="input-group">
+            <select id="refreshInterval">
+              <option value="250">250ms (Very Fast)</option>
+              <option value="500">500ms (Fast)</option>
+              <option value="1000">1000ms (Normal)</option>
+              <option value="2000">2000ms (Slow)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      <div class="tab-panel" id="monitoring-panel">
+        <div class="setting-group">
+          <div class="setting-header">
+            <div class="setting-label">Monitor WebSockets</div>
+            <div class="setting-toggle" id="monitorWebSocketsToggle"></div>
+          </div>
+          <div class="setting-description">Include WebSocket connections in monitoring and logging</div>
+        </div>
+        
+        <div class="setting-group">
+          <div class="setting-header">
+            <div class="setting-label">Monitor XHR Requests</div>
+            <div class="setting-toggle" id="monitorXHRToggle"></div>
+          </div>
+          <div class="setting-description">Monitor traditional XMLHttpRequest calls</div>
+        </div>
+        
+        <div class="setting-group">
+          <div class="setting-header">
+            <div class="setting-label">Monitor Fetch API</div>
+            <div class="setting-toggle" id="monitorFetchToggle"></div>
+          </div>
+          <div class="setting-description">Monitor modern Fetch API requests</div>
+        </div>
+      </div>
+      
+      <div class="tab-panel" id="export-panel">
+        <div class="setting-group">
+          <div class="setting-header">
+            <div class="setting-label">Default Export Format</div>
+          </div>
+          <div class="setting-description">Choose the default format for exporting API call data</div>
+          <div class="input-group">
+            <select id="exportFormat">
+              <option value="json">JSON Format</option>
+              <option value="csv">CSV Format</option>
+              <option value="har">HAR Format</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="setting-group">
+          <div class="setting-header">
+            <div class="setting-label">Include Response Bodies</div>
+            <div class="setting-toggle" id="includeResponsesToggle"></div>
+          </div>
+          <div class="setting-description">Include full response bodies in exports (may result in large files)</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="save-section">
+      <button class="reset-btn" id="resetBtn">Reset to Defaults</button>
+      <button class="save-btn" id="saveBtn">💾 Save Settings</button>
+    </div>
+  </div>
+  
+  <div class="status" id="status">Settings saved successfully!</div>
   
   <script src="options.js"></script>
 </body>

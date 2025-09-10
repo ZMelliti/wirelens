@@ -1,13 +1,28 @@
 (function() {
+  let settings = {
+    monitorWebSockets: true,
+    monitorXHR: true,
+    monitorFetch: true,
+    maxCalls: 1000
+  };
+  
   function notifyExtension(apiCall) {
     window.postMessage({ type: 'WIRELENS_API_CALL', data: apiCall }, '*');
   }
   
   console.log('WireLens: Page script injected');
   
+  // Listen for settings updates
+  window.addEventListener('message', (event) => {
+    if (event.data.type === 'WIRELENS_SETTINGS_UPDATE') {
+      settings = event.data.settings;
+    }
+  });
+  
   // Intercept XMLHttpRequest
   const originalXHR = window.XMLHttpRequest;
   window.XMLHttpRequest = function() {
+    if (!settings.monitorXHR) return new originalXHR();
     const xhr = new originalXHR();
     const originalOpen = xhr.open;
     const originalSend = xhr.send;
@@ -52,6 +67,8 @@
   // Intercept Fetch API
   const originalFetch = window.fetch;
   window.fetch = function(input, init = {}) {
+    if (!settings.monitorFetch) return originalFetch.apply(this, arguments);
+    
     const url = typeof input === 'string' ? input : input.url;
     const method = init.method || 'GET';
     const startTime = Date.now();

@@ -16,11 +16,31 @@ document.addEventListener('DOMContentLoaded', function() {
   
   let autoRefresh = true;
   let refreshInterval;
-  const listView = document.getElementById('listView');
-  const chartView = document.getElementById('chartView');
-  
   let isPaused = false;
   let currentView = 'list';
+  let settings = {};
+  
+  // Load settings
+  chrome.storage.sync.get({
+    maxCalls: 1000,
+    refreshInterval: 500,
+    monitorWebSockets: true,
+    monitorXHR: true,
+    monitorFetch: true,
+    exportFormat: 'json'
+  }, function(result) {
+    settings = result;
+    if (refreshInterval) {
+      clearInterval(refreshInterval);
+      refreshInterval = setInterval(loadApiCalls, settings.refreshInterval);
+    }
+    
+    // Update export format display
+    const exportFormatSpan = document.getElementById('exportFormat');
+    if (exportFormatSpan) {
+      exportFormatSpan.textContent = settings.exportFormat.toUpperCase();
+    }
+  });
   
   // Tab functionality
   document.querySelectorAll('.tab').forEach(tab => {
@@ -222,6 +242,13 @@ document.addEventListener('DOMContentLoaded', function() {
     chrome.storage.local.get(['apiCalls'], function(result) {
       console.log('WireLens Popup: Storage result', result);
       allApiCalls = result.apiCalls || [];
+      
+      // Apply max calls limit from settings
+      if (allApiCalls.length > settings.maxCalls) {
+        allApiCalls = allApiCalls.slice(-settings.maxCalls);
+        chrome.storage.local.set({ apiCalls: allApiCalls });
+      }
+      
       console.log('WireLens Popup: API calls count', allApiCalls.length);
       updateDomainFilter();
       updateStats();
@@ -266,13 +293,40 @@ document.addEventListener('DOMContentLoaded', function() {
   
   exportBtn.addEventListener('click', function() {
     if (allApiCalls.length > 0) {
-      exportApiCalls(allApiCalls, 'json');
+      const originalText = exportBtn.innerHTML;
+      exportBtn.innerHTML = '🔄 Exporting...';
+      exportBtn.disabled = true;
+      
+      chrome.storage.sync.get({
+        exportFormat: 'json',
+        includeResponses: true
+      }, function(settings) {
+        try {
+          exportApiCalls(allApiCalls, settings.exportFormat, settings.includeResponses);
+          exportBtn.innerHTML = '✓ Exported!';
+          setTimeout(() => {
+            exportBtn.innerHTML = originalText;
+            exportBtn.disabled = false;
+          }, 2000);
+        } catch (error) {
+          exportBtn.innerHTML = '✗ Error';
+          setTimeout(() => {
+            exportBtn.innerHTML = originalText;
+            exportBtn.disabled = false;
+          }, 2000);
+        }
+      });
+    } else {
+      exportBtn.innerHTML = '✗ No data';
+      setTimeout(() => {
+        exportBtn.innerHTML = '📥 <span id="exportFormat">' + (settings.exportFormat || 'JSON').toUpperCase() + '</span>';
+      }, 1500);
     }
   });
   
   // Load initial data
   loadApiCalls();
   
-  // Start auto-refresh interval
-  refreshInterval = setInterval(loadApiCalls, 500);
+  // Start auto-refresh interval with settings
+  refreshInterval = setInterval(loadApiCalls, settings.refreshInterval || 500);
 });
