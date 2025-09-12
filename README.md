@@ -1,18 +1,36 @@
-# WireLens
+# 🔍 WireLens
 
-A lightweight browser extension that logs and visualizes all API calls made by any website in real time.  
-Ideal for developers and QA engineers to debug, monitor, and analyze network requests effortlessly.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Chrome Web Store](https://img.shields.io/badge/Chrome-Extension-blue.svg)]()
+[![Version](https://img.shields.io/badge/version-1.0.0-green.svg)]()
 
----
+A modern, lightweight browser extension that captures and visualizes all API calls made by websites in real-time. Perfect for developers, QA engineers, and security researchers.
 
-## Features
+## ✨ Key Features
 
-- Logs all API calls (XHR, Fetch, WebSocket) made by the webpage in real time.
-- Visualizes request/response details including URL, method, status, headers, and payload.
-- Filters requests by method, status, or domain.
-- Simple and intuitive UI embedded in the extension popup.
-- Lightweight and performant, designed to have minimal impact on browsing experience.
-- Open source and easy to extend.
+### 🚀 Real-time Monitoring
+- **XHR & Fetch API**: Captures all AJAX and modern fetch requests
+- **WebSocket Support**: Monitors real-time bidirectional communication
+- **Live Updates**: See requests as they happen with auto-refresh
+
+### 🎨 Modern Interface
+- **Glassmorphism Design**: Beautiful, modern UI with backdrop blur effects
+- **Tabbed Layout**: Organized interface for better data management
+- **Dark/Light Themes**: Adaptive design for any preference
+
+### 🔧 Advanced Filtering
+- **Method Filter**: GET, POST, PUT, DELETE, PATCH
+- **Status Codes**: 2xx, 3xx, 4xx, 5xx responses
+- **Domain Filter**: Focus on specific hosts
+- **Time Range**: Last 1m, 5m, 15m, 1h
+- **Size Filter**: Small, medium, large requests
+- **Search**: Find specific URLs or methods
+
+### 📊 Detailed Analysis
+- **Request/Response Headers**: Full header inspection
+- **Timing Visualization**: Performance breakdown
+- **Payload Inspection**: JSON formatting and syntax highlighting
+- **Performance Metrics**: Duration, size, and efficiency ratings
 
 ---
 
@@ -23,12 +41,6 @@ Ideal for developers and QA engineers to debug, monitor, and analyze network req
 ---
 
 ## Installation
-
-### From Chrome Web Store / Firefox Add-ons (if published)
-
-1. Search for **WireLens** in your browser's extension store.
-2. Click **Add to Chrome/Firefox**.
-3. Click the extension icon to start monitoring API calls on any webpage.
 
 ### Manual Installation (For Developers)
 
@@ -45,58 +57,80 @@ Ideal for developers and QA engineers to debug, monitor, and analyze network req
 
 ---
 
-## Usage
+## 🚀 Quick Start
 
-1. **Start Monitoring**: Click the WireLens extension icon while on any webpage
-2. **View API Calls**: All network requests will appear in real-time in the popup
-3. **Filter Requests**: Use the dropdown filters to show specific methods or status codes
-4. **Inspect Details**: Click on any API call to view detailed request/response information
-5. **Export Data**: Click the "Export" button to download API calls as JSON
-6. **Clear History**: Click "Clear" to remove all logged requests
+1. **Install**: Load the extension in Chrome developer mode
+2. **Navigate**: Go to any website you want to monitor
+3. **Open**: Click the WireLens icon in your toolbar
+4. **Monitor**: Watch API calls appear in real-time
+5. **Analyze**: Click any request for detailed inspection
+6. **Export**: Save data in your preferred format
 
----
+## 📚 Advanced Usage
 
-## Features in Detail
+### Filtering Requests
+- Use **multiple filters** simultaneously for precise results
+- **Search bar** supports URL and method matching
+- **Time filters** help focus on recent activity
+- **Size filters** identify large payloads
 
-### Supported Request Types
-- **XMLHttpRequest (XHR)**: Traditional AJAX requests
-- **Fetch API**: Modern promise-based HTTP requests  
-- **WebSocket**: Real-time bidirectional communication
-
-### Filtering Options
-- Filter by HTTP method (GET, POST, PUT, DELETE, PATCH)
-- Filter by response status (2xx, 3xx, 4xx, 5xx)
-- Real-time updates as new requests are made
+### Performance Analysis
+- **Timing charts** show request breakdown
+- **Performance ratings** indicate response speed
+- **Size metrics** help identify optimization opportunities
+- **Error tracking** highlights failed requests
 
 ### Data Export
-- Export all captured requests as JSON format
-- Includes full request/response details
-- Timestamped for analysis
+- **JSON**: Full data preservation with metadata
+- **CSV**: Import into Excel, Google Sheets, or databases
+- **HAR**: Compatible with Chrome DevTools and other analyzers
 
 ---
 
-## Development
+## 🛠️ Development
 
-### Project Structure
+### Architecture
+- **Manifest V3**: Modern Chrome extension standards
+- **Content Scripts**: Secure API interception
+- **Storage API**: Efficient data management
+- **Modern JavaScript**: ES6+ features throughout
+
+### File Structure
 ```
 wirelens/
 ├── manifest.json          # Extension configuration
-├── content.js            # API interception logic
-├── background.js         # Extension lifecycle management
-├── popup.html           # Main UI interface
-├── popup.js             # UI logic and filtering
-├── details.html         # Detailed view interface
-├── details.js           # Detail view logic
-├── export.js            # Data export functionality
-└── icons/               # Extension icons
+├── content.js            # Page script injection
+├── inject.js             # API interception logic
+├── popup.html/js         # Main interface
+├── details.html/js       # Request details view
+├── options.html/js       # Settings page
+├── export.js             # Data export functionality
+└── icons/                # Extension icons
 ```
 
-### Contributing
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+### Local Development
+1. Clone the repository
+2. Open Chrome and go to `chrome://extensions/`
+3. Enable "Developer mode"
+4. Click "Load unpacked" and select the project folder
+5. Make changes and reload the extension
+
+### 🤝 Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+#### Ways to Contribute
+- 🐛 **Bug Reports**: Found an issue? Let us know!
+- ✨ **Feature Requests**: Have an idea? We'd love to hear it!
+- 📝 **Documentation**: Help improve our docs
+- 💻 **Code**: Submit pull requests for fixes and features
+
+#### Development Setup
+```bash
+git clone https://github.com/zmelliti/wirelens.git
+cd wirelens
+# Load in Chrome as unpacked extension
+```
 
 ---
 
@@ -106,11 +140,13 @@ MIT License - see LICENSE file for details
 
 ---
 
-## Changelog
+## 📋 Documentation
 
-### v1.0.0
-- Initial release with XHR, Fetch, and WebSocket monitoring
-- Real-time API call visualization
-- Request/response filtering
-- Detailed inspection view
-- JSON export functionality
+- [API Documentation](API.md)
+- [Contributing Guidelines](CONTRIBUTING.md)
+- [Changelog](CHANGELOG.md)
+- [Security Policy](SECURITY.md)
+
+---
+
+**Made with ❤️ by for the community by [Zied MELLITI](https://github.com/zmelliti)**
